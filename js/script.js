@@ -17,6 +17,7 @@ let oldInputValue;
 
 // Funções Gerais
 function addPriority(value, el) {
+    // Limpa classes anteriores
     el.className = "";
     
     switch (value) {
@@ -34,6 +35,8 @@ function addPriority(value, el) {
             el.classList.add("priority-high");
             el.id = "priority-high";
             el.innerHTML = `<p>Alta</p>`;
+            break;
+        default:
             break;
     }
     return el;
@@ -57,7 +60,7 @@ function verifyTitleTask(task) {
 
 function clearValue() {
     todoInput.value = "";
-    selectPriority.value = "high";
+    selectPriority.value = "high"; // Reset para valor padrão
     todoInput.focus();
 }
 
@@ -93,8 +96,13 @@ function saveTodo(task, done = 0, save = 1, prioritySelected) {
         removeBtn.innerHTML = '<i class="fa-solid fa-xmark"></i>';
         todo.appendChild(removeBtn);
 
-        if (done) todo.classList.add("done");
-        if (save) saveTodoLocalStorage({ task, done: 0, priority: prioritySelected });
+        // Utilizando dados do LocalStorage
+        if (done) {
+            todo.classList.add("done");
+        }
+        if (save) {
+            saveTodoLocalStorage({ task: task, done: 0, priority: prioritySelected });
+        }
 
         todoList.appendChild(todo);
     }
@@ -150,21 +158,27 @@ function filterTodos(filterValue) {
 
     switch (filterValue) {
         case "all":
-            todos.forEach(todo => todo.style.display = "flex");
+            todos.forEach((todo) => {
+                todo.style.display = "flex";
+            });
             break;
+
         case "done":
-            todos.forEach(todo =>
+            todos.forEach((todo) => {
                 todo.classList.contains("done") ?
-                    todo.style.display = "flex" :
-                    todo.style.display = "none"
-            );
+                    (todo.style.display = "flex") :
+                    (todo.style.display = "none");
+            });
             break;
+
         case "todo":
-            todos.forEach(todo =>
+            todos.forEach((todo) => {
                 !todo.classList.contains("done") ?
                     todo.style.display = "flex" :
-                    todo.style.display = "none"
-            );
+                    todo.style.display = "none";
+            });
+            break;
+        default:
             break;
     }
 }
@@ -174,8 +188,10 @@ function countTodos() {
     let totalTodos = todos.length;
     let doneTodos = 0;
 
-    todos.forEach(todo => {
-        if (todo.classList.contains("done")) doneTodos++;
+    todos.forEach((todo) => {
+        if (todo.classList.contains("done")) {
+            doneTodos++;
+        }
     });
 
     countStatus.innerText = `Status: ${doneTodos}/${totalTodos}`;
@@ -184,7 +200,9 @@ function countTodos() {
 // Eventos
 todoForm.addEventListener("submit", (e) => {
     e.preventDefault();
+
     const inputValue = todoInput.value.trim();
+
     if (inputValue) {
         saveTodo(inputValue);
         countTodos();
@@ -222,7 +240,8 @@ document.addEventListener("click", (e) => {
         toolbar.style.display = "none";
         countStatus.style.display = "none";
         editInput.value = todoTitle;
-
+        
+        // Corrigir a definição da prioridade no edit
         switch (todoPriority) {
             case "Baixa":
                 editselectPriority.value = "low";
@@ -236,10 +255,10 @@ document.addEventListener("click", (e) => {
             default:
                 editselectPriority.value = "high";
         }
-
+        
         oldInputValue = todoTitle;
     }
-
+    
     countTodos();
     filterTodos(filterBtn.value);
 });
@@ -255,7 +274,7 @@ editForm.addEventListener("submit", (e) => {
     e.preventDefault();
     toolbar.style.display = "flex";
     countStatus.style.display = "flex";
-
+    
     const editInputValue = editInput.value.trim();
     const editSelectValue = editselectPriority.value;
 
@@ -283,12 +302,14 @@ filterBtn.addEventListener("change", (e) => {
 
 // Funções Local Storage
 function getTodosLocalStorage() {
-    return JSON.parse(localStorage.getItem("todos")) || [];
+    const todos = JSON.parse(localStorage.getItem("todos")) || [];
+    return todos;
 }
 
 function loadTodosLocalStorage() {
     const todos = getTodosLocalStorage();
-    todos.forEach(todo => {
+
+    todos.forEach((todo) => {
         saveTodo(todo.task, todo.done, 0, todo.priority);
     });
 }
@@ -301,26 +322,22 @@ function saveTodoLocalStorage(todo) {
 
 function removeTodoLocalStorage(task) {
     const todos = getTodosLocalStorage();
-    const filteredTodos = todos.filter(todo => todo.task !== task);
+    const filteredTodos = todos.filter((todo) => todo.task !== task);
     localStorage.setItem("todos", JSON.stringify(filteredTodos));
 }
 
 function updateStatusTodoLocalStorage(task) {
     const todos = getTodosLocalStorage();
-    todos.map(todo => {
-        if (todo.task === task) todo.done = !todo.done;
-    });
+    todos.map((todo) => todo.task === task ? (todo.done = !todo.done) : null);
     localStorage.setItem("todos", JSON.stringify(todos));
 }
 
 function updateTodoLocalStorage(todoOldTask, todoNewTask) {
     const todos = getTodosLocalStorage();
-    todos.map(todo => {
-        if (todo.task === todoOldTask) todo.task = todoNewTask;
-    });
+    todos.map((todo) => todo.task === todoOldTask ? (todo.task = todoNewTask) : null);
     localStorage.setItem("todos", JSON.stringify(todos));
 }
 
-// Carregar todos do localStorage ao iniciar
+// Carregar todos do localStorage quando a página carregar
 loadTodosLocalStorage();
 countTodos();
