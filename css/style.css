@@ -28,7 +28,7 @@ button {
     justify-content: center;
     align-items: center;
     transition: 0.4s;
-    gap: 0.3rem;
+    gap: 0.3rem; /* Espaço entre ícone e texto */
 }
 
 button:hover {
@@ -116,3 +116,115 @@ select {
 
 #toolbar {
     padding: 1rem;
+    border-bottom: 0.1rem solid #14213d;
+    display: flex;
+}
+
+#toolbar h4 {
+    margin-bottom: 0.5rem;
+}
+
+#search {
+    padding-right: 1rem;
+    margin-right: 1rem;
+    width: 65%;
+    display: flex;
+    flex-direction: column;
+}
+
+#search form {
+    display: flex;
+}
+
+#search input {
+    width: 100%;
+    margin-right: 0.3rem;
+}
+
+#filter {
+    width: 35%;
+    display: flex;
+    flex-direction: column;
+}
+
+#filter select {
+    flex: 1;
+}
+
+#countStatus {
+    display: flex;
+    justify-content: end;
+    margin-right: 5%;
+    font-style: italic;
+}
+
+.todo {
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    padding: 0.7rem;
+    transition: .3s;
+    border-bottom: 1px solid #14213d;
+}
+
+#priority-high {
+    font-size: 0.8em;
+    background-color: crimson;
+    font-weight: bold;
+    width: 15%;
+    margin-left: 2%;
+    display: flex;
+    justify-content: center;
+    padding: 0.2rem;
+    border-radius: 3px;
+}
+
+#priority-middle {
+    font-size: 0.8em;
+    background-color: #ee740a;
+    font-weight: bold;
+    width: 15%;
+    margin-left: 2%;
+    display: flex;
+    justify-content: center;
+    padding: 0.2rem;
+    border-radius: 3px;
+}
+
+#priority-low {
+    font-size: 0.8em;
+    background-color: #122340;
+    font-weight: bold;
+    width: 15%;
+    margin-left: 2%;
+    display: flex;
+    justify-content: center;
+    padding: 0.2rem;
+    border-radius: 3px;
+}
+
+#priority-low p,
+#priority-middle p,
+#priority-high p {
+    color: #fff;
+}
+
+.todo h3 {
+    flex: 1;
+    font-size: 0.85rem;
+    overflow-wrap: anywhere;
+}
+
+.todo button {
+    margin-left: 0.4rem;
+}
+
+.done {
+    background-color: #395169;
+}
+
+.done h3 {
+    color: #fff;
+    text-decoration: line-through;
+    font-style: italic;
+}
